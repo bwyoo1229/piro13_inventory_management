@@ -11,6 +11,7 @@
     <li>{{ account.address }}</li>
 </ul>
 
+<a href="{% url 'shop:account_list' %}">List</a>
 <a href="{% url 'shop:account_update' item.pk %}">Edit</a>
 <a href="{% url 'shop:account_delete' item.pk %}">Delete</a>
 
