@@ -8,19 +8,11 @@
 
 <h1>ITEM REGISTER</h1>
 <br />
-<form action="/item/<int:pk>/" method="POST">
+<form action="" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
-
-    Title: <input type="text" name="title" /><br />
-    Content: <textarea name="content" cols="30" rows="10"></textarea><br />
-    Price: <input type="number" name="price" /><br />
-    Amount: <input type="number" name="amount" /><br />
-    Account:<select name="account">
-    <option value="">number1</option>
-    <option value="">number2</option>
-    <option value="">number3</option>
-    </select><br />
-
+    <table>
+        {{form.as_table}}
+    </table>
     <input type="submit" value="REGISTER">
 </form>
 

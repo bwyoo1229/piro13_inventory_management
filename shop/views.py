@@ -1,6 +1,8 @@
-from django.http import HttpResponseRedirect
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse
+
 from shop.models import Item
+from shop.forms import ItemForm, AccountForm
 
 
 def item_list(request):
@@ -11,22 +13,16 @@ def item_list(request):
     return render(request, 'shop/list.html', context=context)
 
 
-def item_create(request):
-    if request.method == 'GET':
-        return render(request, 'shop/create.html', context={})
+def item_create(request, item=None):
+    if request.method == 'POST':
+        form = ItemForm(request.POST, request.FILES, instance=item)
+        if form.is_valid():
+            item = form.save()
+            return redirect(item)
+    else:
+        form = ItemForm(instance=item)
 
-    title = request.POST['title']
-    image = request.POST['image']
-    content = request.POST['content']
-    price = request.POST['price']
-    amount = request.POST['amount']
-    account = request.POST['account']
-
-    item = Item.objects.create(
-        title=title, image=image, content=content, price=price, amount=amount, account=account
-    )
-
-    return HttpResponseRedirect('list/<int:pk>/')
+    return render(request, 'shop/create.html', context={'form': form})
 
 
 def item_retrieve(request, pk):
@@ -38,35 +34,12 @@ def item_retrieve(request, pk):
 
 
 def item_update(request, pk):
-    item = Item.object.get(id=pk)
-
-    if request.method == 'GET':
-        context = {
-            'item': item
-        }
-        return render(request, 'article/update.html', context=context)
-
-    title = request.POST['title']
-    image = request.POST['image']
-    content = request.POST['content']
-    price = request.POST['price']
-    amount = request.POST['amount']
-    account = request.POST['account']
-
-    item.title = title
-    item.image = image
-    item.content = content
-    item.price = price
-    item.amount = amount
-    item.account = account
-    Item.save()
-
-    return HttpResponseRedirect('list/<int:pk>/')
+    item = get_object_or_404(Item, pk=pk)
+    return item_update(request, item)
 
 
-def delete(request, pk):
+def item_delete(request, pk):
     item = Item.objects.get(id=pk)
     item.delete()
 
-    return HttpResponseRedirect('list/<int:pk>/')
-
+    return redirect(reverse('shop:item_list'))
