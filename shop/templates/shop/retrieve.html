@@ -13,7 +13,7 @@
     <li>{{ item.account }}</li>
 </ul>
 
-<a href="/retrieve/<int:pk>/">Edit</a>
-<a href="/item/delete/<int:ok>">Delete</a>
+<a href="{% url 'shop:item_update' item.pk %}">Edit</a>
+<a href="{% url 'shop:item_delete' item.pk %}">Delete</a>
 </body>
 </html>

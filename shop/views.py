@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 
-from shop.models import Item
+from shop.models import Item, Account
 from shop.forms import ItemForm, AccountForm
 
 
@@ -41,5 +41,21 @@ def item_update(request, pk):
 def item_delete(request, pk):
     item = Item.objects.get(id=pk)
     item.delete()
-
     return redirect(reverse('shop:item_list'))
+
+
+def account_list(request):
+    queryset = Account.object.all()
+    return render(request, 'account/list.html', context={'accounts': queryset})
+
+
+def account_create(request, account=None):
+    if request.method == 'POST':
+        form = AccountForm(request.POST, instance=account)
+        if form.is_valid():
+            account = form.save()
+            return redirect(account)
+    else:
+        form = AccountForm(instance=account)
+    return render(request, 'shop/account_create.html', context={'form': form})
+

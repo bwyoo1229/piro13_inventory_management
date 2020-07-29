@@ -6,11 +6,11 @@
 </head>
 <body>
 
-<h1>ITEM LIST</h1>
+<h1>ACCOUNT LIST</h1>
 <br />
 <ul>
-    {% for item in items %}
-    <li><a href="{% url 'shop/item_list' pk=item.pk %}">{{ item }}</a></li>
+    {% for account in accounts %}
+    <li><a href="{% url 'shop/account_list' pk=account.pk %}">{{ account }}</a></li>
     {% endfor %}
 </ul>
 
