@@ -6,9 +6,9 @@
 </head>
 <body>
 
-<h1>ITEM REGISTER</h1>
+<h1>ITEM EDIT</h1>
 <br />
-<form action="/item/<int:pk>/" method="POST">
+<form action="/item/<int:pk>" method="POST">
     {% csrf_token %}
 
     Title: <input type="text" name="title" /><br />
@@ -21,7 +21,7 @@
     <option value="">number3</option>
     </select><br />
 
-    <input type="submit" value="REGISTER">
+    <input type="submit" value="Edit" />
 </form>
 
 
