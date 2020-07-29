@@ -1,6 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
-
 from shop.models import Item, Account
 from shop.forms import ItemForm, AccountForm
 
@@ -35,7 +34,7 @@ def item_retrieve(request, pk):
 
 def item_update(request, pk):
     item = get_object_or_404(Item, pk=pk)
-    return item_update(request, item)
+    return item_create(request, item)
 
 
 def item_delete(request, pk):
@@ -45,8 +44,8 @@ def item_delete(request, pk):
 
 
 def account_list(request):
-    queryset = Account.object.all()
-    return render(request, 'account/list.html', context={'accounts': queryset})
+    queryset = Account.objects.all()
+    return render(request, 'shop/account_list.html', context={'accounts': queryset})
 
 
 def account_create(request, account=None):
@@ -58,4 +57,24 @@ def account_create(request, account=None):
     else:
         form = AccountForm(instance=account)
     return render(request, 'shop/account_create.html', context={'form': form})
+
+
+def account_retrieve(request, pk):
+    account = get_object_or_404(Item, pk=pk)
+    context = {
+        'account': account
+    }
+    return render(request, 'shop/account_retrieve.html', context=context)
+
+
+def account_update(request, pk):
+    account = get_object_or_404(Account, pk=pk)
+    return account_create(request, account)
+
+
+def account_delete(request, pk):
+    account = Account.objects.get(id=pk)
+    account.delete()
+    return redirect(reverse('shop:item_list'))
+
 
