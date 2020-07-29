@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<h1>ITEM REGISTER</h1>
+<br />
+<form action="" method="POST">
+    {% csrf_token %}
+
+    Title: <input type="text" name="title" /><br />
+    Content: <textarea name="content" cols="30" rows="10"></textarea><br />
+    Price: <input type="number" name="price" /><br />
+    Amount: <input type="number" name="amount" /><br />
+    Account:<select name="account">
+    <option value="">number1</option>
+    <option value="">number2</option>
+    <option value="">number3</option>
+    </select><br />
+
+    <input type="submit" value="REGISTER">
+</form>
+
+
+</body>
+</html>
