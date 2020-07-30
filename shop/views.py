@@ -12,14 +12,14 @@ def item_list(request):
     return render(request, 'shop/list.html', context=context)
 
 
-def item_create(request, item=None):
+def item_create(request):
     if request.method == 'POST':
-        form = ItemForm(request.POST, request.FILES, instance=item)
+        form = ItemForm(request.POST, request.FILES)
         if form.is_valid():
             item = form.save()
-            return redirect(item)
+            return redirect('shop:item_retrieve', item.pk)
     else:
-        form = ItemForm(instance=item)
+        form = ItemForm()
 
     return render(request, 'shop/create.html', context={'form': form})
 
@@ -33,8 +33,20 @@ def item_retrieve(request, pk):
 
 
 def item_update(request, pk):
-    item = get_object_or_404(Item, pk=pk)
-    return item_create(request, item)
+    item = Item.objects.get(pk=pk)
+
+    if request.method == "POST":
+        form = AccountForm(request.POST, instance=item)
+        if form.is_valid():
+            item = form.save()
+        return redirect('shop:account_read', item.pk)
+
+    else:
+        form = AccountForm(instance=item)
+        context = {
+            "form": form
+        }
+        return render(request, "shop/update.html", context=context)
 
 
 def item_delete(request, pk):
@@ -48,19 +60,19 @@ def account_list(request):
     return render(request, 'shop/account_list.html', context={'accounts': queryset})
 
 
-def account_create(request, account=None):
+def account_create(request):
     if request.method == 'POST':
-        form = AccountForm(request.POST, instance=account)
+        form = AccountForm(request.POST)
         if form.is_valid():
             account = form.save()
-            return redirect(account)
+            return redirect('shop:account_retrieve', account.pk)
     else:
-        form = AccountForm(instance=account)
-    return render(request, 'shop/account_create.html', context={'form': form})
+        form = AccountForm()
+        return render(request, 'shop/account_create.html', context={'form': form})
 
 
 def account_retrieve(request, pk):
-    account = get_object_or_404(Item, pk=pk)
+    account = Account.objects.get(pk=pk)
     context = {
         'account': account
     }
@@ -68,8 +80,20 @@ def account_retrieve(request, pk):
 
 
 def account_update(request, pk):
-    account = get_object_or_404(Account, pk=pk)
-    return account_create(request, account)
+    account = Account.objects.get(pk=pk)
+
+    if request.method == "POST":
+        form = AccountForm(request.POST, instance=account)
+        if form.is_valid():
+            account = form.save()
+        return redirect('shop:account_retrieve', account.pk)
+
+    else:
+        form = AccountForm(instance=account)
+        context = {
+            "form": form
+        }
+        return render(request, "shop/account_update.html", context=context)
 
 
 def account_delete(request, pk):
